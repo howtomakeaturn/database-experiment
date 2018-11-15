@@ -70,7 +70,7 @@ class Controller extends BaseController
     {
         set_time_limit(0);
 
-        for ($i=0; $i <2000 ; $i++) {
+        for ($i=0; $i <1000 ; $i++) {
             DB::transaction(function() {
                 $this->_generate();
              });
