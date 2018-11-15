@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('/generate', 'Controller@generate');
+
+Route::get('/query', 'Controller@query');

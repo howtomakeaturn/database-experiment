@@ -14,6 +14,45 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    function query()
+    {
+        $age = 30;
+        $height = 180;
+        $weight = 70;
+
+        DB::table('entities')
+            ->where('age', '<', $age)
+            ->where('height', '<', $height)
+            ->where('weight', '>', $weight)
+            ->get();
+
+        DB::table('entities')
+            ->where('json_info->age', '<', $age)
+            ->where('json_info->height', '<', $height)
+            ->where('json_info->weight', '>', $weight)
+            ->get();
+
+        DB::table('entities')
+            ->join('meta_cols as m1', function($join) use ($age) {
+                $join->on('m1.entity_id', '=', 'entities.id');
+                $join->where('m1.meta_key', '=', 'age');
+                $join->where('m1.meta_value', '<', $age);
+             })
+             ->join('meta_cols as m2', function($join) use ($height) {
+                 $join->on('m2.entity_id', '=', 'entities.id');
+                 $join->where('m2.meta_key', '=', 'height');
+                 $join->where('m2.meta_value', '<', $height);
+             })
+             ->join('meta_cols as m3', function($join) use ($weight) {
+                $join->on('m3.entity_id', '=', 'entities.id');
+                $join->where('m3.meta_key', '=', 'weight');
+                $join->where('m3.meta_value', '<', $weight);
+            })
+            ->get();
+
+        return view('welcome');
+    }
+
     function generate()
     {
         set_time_limit(0);
