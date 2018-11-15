@@ -16,6 +16,7 @@ class CreateBasicTables extends Migration
         Schema::create('entities', function($t){
             $t->increments('id');
             $t->integer('age');
+            $t->integer('height');
             $t->integer('weight');
             $t->text('text_info');
             $t->json('json_info');
@@ -25,8 +26,8 @@ class CreateBasicTables extends Migration
         Schema::create('meta_cols', function($t){
             $t->increments('id');
             $t->integer('entity_id');
-            $t->integer('meta_key');
-            $t->integer('meta_value');
+            $t->string('meta_key');
+            $t->string('meta_value');
             $t->timestamps();
         });
     }
