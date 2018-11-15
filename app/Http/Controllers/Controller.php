@@ -20,19 +20,25 @@ class Controller extends BaseController
         $height = 180;
         $weight = 70;
 
-        DB::table('entities')
+        $this->sql($age, $height, $weight);
+        $this->json($age, $height, $weight);
+        $this->eav($age, $height, $weight);
+
+        return view('welcome');
+    }
+
+    function sql($age, $height, $weight)
+    {
+        return DB::table('entities')
             ->where('age', '<', $age)
             ->where('height', '<', $height)
             ->where('weight', '>', $weight)
             ->get();
+    }
 
-        DB::table('entities')
-            ->where('json_info->age', '<', $age)
-            ->where('json_info->height', '<', $height)
-            ->where('json_info->weight', '>', $weight)
-            ->get();
-
-        DB::table('entities')
+    function eav($age, $height, $weight)
+    {
+        return DB::table('entities')
             ->join('meta_cols as m1', function($join) use ($age) {
                 $join->on('m1.entity_id', '=', 'entities.id');
                 $join->where('m1.meta_key', '=', 'age');
@@ -49,8 +55,15 @@ class Controller extends BaseController
                 $join->where('m3.meta_value', '<', $weight);
             })
             ->get();
+    }
 
-        return view('welcome');
+    function json($age, $height, $weight)
+    {
+        return DB::table('entities')
+            ->where('json_info->age', '<', $age)
+            ->where('json_info->height', '<', $height)
+            ->where('json_info->weight', '>', $weight)
+            ->get();
     }
 
     function generate()
