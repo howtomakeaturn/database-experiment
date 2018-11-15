@@ -16,8 +16,12 @@ class Controller extends BaseController
 
     function generate()
     {
-        for ($i=0; $i <100 ; $i++) {
-            $this->_generate();
+        // set_time_limit(0);
+
+        for ($i=0; $i <2000 ; $i++) {
+            DB::transaction(function() {
+                $this->_generate();
+             });
         }
 
         return view('welcome');
