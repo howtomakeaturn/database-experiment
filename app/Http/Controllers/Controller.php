@@ -52,7 +52,7 @@ class Controller extends BaseController
              ->join('meta_cols as m3', function($join) use ($weight) {
                 $join->on('m3.entity_id', '=', 'entities.id');
                 $join->where('m3.meta_key', '=', 'weight');
-                $join->where('m3.meta_value', '<', $weight);
+                $join->where('m3.meta_value', '>', $weight);
             })
             ->get();
     }
